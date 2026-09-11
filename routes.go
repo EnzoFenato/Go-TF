@@ -19,24 +19,19 @@ func configurarRotas(r *gin.Engine) {
 		})
 	})
 
-	// Salas
 	v1.POST("/salas", criarSala)
 	v1.GET("/salas", listarSalas)
 	v1.GET("/salas/:id/agenda", consultarAgendaSala)
 
-	// Alunos
 	v1.POST("/alunos", criarAluno)
 	v1.GET("/alunos", listarAlunos)
 	v1.GET("/alunos/:id", buscarAluno)
 
-	// Turmas
 	v1.POST("/turmas", criarTurma)
 	v1.GET("/turmas", listarTurmas)
 
-	// Matrículas
 	v1.POST("/turmas/:id/alunos", matricularAluno)
 	v1.GET("/turmas/:id/alunos", listarAlunosTurma)
 
-	// Alocação
 	v1.POST("/turmas/:id/alocar", alocarSala)
 }

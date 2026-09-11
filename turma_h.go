@@ -96,7 +96,6 @@ func matricularAluno(c *gin.Context) {
 
 		if turmas[i].ID == turmaID {
 
-			// Verifica se o aluno já está matriculado
 			for _, aluno := range turmas[i].Alunos {
 
 				if aluno.Matricula == dados.AlunoID {
@@ -108,7 +107,6 @@ func matricularAluno(c *gin.Context) {
 				}
 			}
 
-			// Se a turma já possui sala, verifica capacidade
 			if turmas[i].Alocacao != nil {
 
 				for _, sala := range salas {
@@ -129,7 +127,6 @@ func matricularAluno(c *gin.Context) {
 				}
 			}
 
-			// Verifica conflito de horário do aluno
 			if turmas[i].Alocacao != nil {
 
 				for _, outraTurma := range turmas {
@@ -173,7 +170,6 @@ func matricularAluno(c *gin.Context) {
 				}
 			}
 
-			// Adiciona aluno na turma
 			turmas[i].Alunos = append(
 				turmas[i].Alunos,
 				alunoEncontrado,
@@ -232,7 +228,6 @@ func alocarSala(c *gin.Context) {
 		return
 	}
 
-	// Verifica campos obrigatórios
 	if novaAlocacao.SalaID == "" ||
 		novaAlocacao.DiaSemana == "" ||
 		novaAlocacao.HoraInicio == "" ||
@@ -244,7 +239,6 @@ func alocarSala(c *gin.Context) {
 		return
 	}
 
-	// Validação dos horários
 	inicio, errInicio :=
 		time.Parse(
 			"15:04",
@@ -267,7 +261,6 @@ func alocarSala(c *gin.Context) {
 		return
 	}
 
-	// Procura a sala
 	var salaEncontrada *Sala
 
 	for i := range salas {
@@ -288,7 +281,6 @@ func alocarSala(c *gin.Context) {
 		return
 	}
 
-	// Sala precisa estar ativa
 	if !salaEncontrada.Ativa {
 
 		c.JSON(http.StatusConflict, gin.H{
@@ -297,7 +289,6 @@ func alocarSala(c *gin.Context) {
 		return
 	}
 
-	// Procura a turma
 	turmaIndex := -1
 
 	for i := range turmas {
@@ -317,7 +308,6 @@ func alocarSala(c *gin.Context) {
 		return
 	}
 
-	// Turma precisa estar ativa
 	if !turmas[turmaIndex].Ativa {
 
 		c.JSON(http.StatusConflict, gin.H{
@@ -326,7 +316,6 @@ func alocarSala(c *gin.Context) {
 		return
 	}
 
-	// Capacidade da sala
 	if len(turmas[turmaIndex].Alunos) >
 		salaEncontrada.Capacidade {
 
@@ -340,7 +329,6 @@ func alocarSala(c *gin.Context) {
 		return
 	}
 
-	// Verifica conflito de sala
 	for _, turma := range turmas {
 
 		if turma.ID == turmaID ||
@@ -368,7 +356,6 @@ func alocarSala(c *gin.Context) {
 		}
 	}
 
-	// Verifica conflito dos alunos
 	for _, outraTurma := range turmas {
 
 		if outraTurma.ID == turmaID ||
@@ -413,7 +400,6 @@ func alocarSala(c *gin.Context) {
 		}
 	}
 
-	// Realiza a alocação
 	turmas[turmaIndex].Alocacao =
 		&novaAlocacao
 
